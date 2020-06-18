@@ -1,3 +1,4 @@
+import helpers.DockerHostResolver;
 import helpers.DockerdExporterImageTagResolver;
 import io.homecentr.testcontainers.containers.GenericContainerEx;
 import io.homecentr.testcontainers.containers.HttpResponse;
@@ -8,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 import java.io.IOException;
@@ -22,6 +22,7 @@ public class DockerdExporterContainerShould {
     @BeforeClass
     public static void before() {
         _exporterContainer = new GenericContainerEx<>(new DockerdExporterImageTagResolver())
+                .withEnv("DOCKERD_HOST", DockerHostResolver.getDockerHost())
                 .withImagePullPolicy(PullPolicyEx.never())
                 .waitingFor(WaitEx.forS6OverlayStart());
 
