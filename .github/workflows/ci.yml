@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: "homecentr/$$IMAGE_NAME$$"
+  IMAGE_NAME: "homecentr/dockerd-exporter"
 
 jobs:
   build:
@@ -18,6 +18,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
+      - name: Expose metrics from Docker daemon
+        run: cat /etc/docker/daemon.json
       
       - name: Set tag var
         id: vars
