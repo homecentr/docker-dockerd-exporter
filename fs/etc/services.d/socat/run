@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv ash
+
+echo "Bridging metrics from $DOCKERD_HOST:$DOCKERD_PORT"
+
+exec runas socat -d -d TCP-L:9323,fork TCP:$DOCKERD_HOST:$DOCKERD_PORT

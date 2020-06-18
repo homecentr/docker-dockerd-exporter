@@ -5,7 +5,7 @@ on:
       - master
 
 env:
-  IMAGE_NAME: "homecentr/$$IMAGE_NAME$$"
+  IMAGE_NAME: "homecentr/dockerd-exporter"
 
 jobs:
   build:
@@ -17,6 +17,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+
+      - name: Expose metrics from Docker daemon
+        run: |
+          sudo sed -i '$s/}/, \"experimental\": true, \"metrics-addr\": \"0.0.0.0:9323\" }/' /etc/docker/daemon.json
+          sudo cat /etc/docker/daemon.json
+          sudo systemctl restart docker
 
       - name: "Determine release version"
         uses: codfish/semantic-release-action@master
@@ -40,7 +46,7 @@ jobs:
 
       - name: Test Docker image
         if: env.RELEASE_VERSION != ''
-        run: cd tests && sudo gradle test -Dimage_tag=${{ env.IMAGE_NAME }}:${{ env.RELEASE_VERSION }}
+        run: cd tests && sudo gradle test -Ddocker_image_tag=${{ env.IMAGE_NAME }}:${{ env.RELEASE_VERSION }}
       
       - name: Scan with Phonito Security
         if: env.RELEASE_VERSION != ''
