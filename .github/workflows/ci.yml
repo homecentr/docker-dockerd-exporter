@@ -20,7 +20,9 @@ jobs:
           java-version: 11
 
       - name: Expose metrics from Docker daemon
-        run: cat /etc/docker/daemon.json
+        run: |
+          sed -i '$s/}/,\"experimental\":\"true\", \"metrics-addr\": \"127.0.0.1:9323\" }/' /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
       
       - name: Set tag var
         id: vars
