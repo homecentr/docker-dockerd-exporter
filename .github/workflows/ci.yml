@@ -24,6 +24,7 @@ jobs:
           sudo sed -i '$s/}/,\"experimental\":\"true\", \"metrics-addr\": \"127.0.0.1:9323\" }/' /etc/docker/daemon.json
           sudo cat /etc/docker/daemon.json
           sudo systemctl restart docker
+          sudo systemctl status docker.service
       
       - name: Set tag var
         id: vars
