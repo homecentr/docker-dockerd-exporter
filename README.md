@@ -32,6 +32,8 @@ Please note that the metrics are currently not exposed by default. It requires e
 | DOCKERD_HOST | host.docker.internal | Hostname pointing to the node hosting Docker daemon with exposed metrics. `host.docker.internal` points to the node hosting the container and works correctly also in Docker Swarm. |
 | DOCKERD_PORT | 9323 | Port on which the metrics are exposed. 9323 is the value used by Docker docs so the image uses it as default. |
 
+> Please note that the container must be connected to a network for the `host.docker.internal` record to be resolvable via Docker DNS.  
+
 ## Exposed ports
 
 | Port | Protocol | Description |

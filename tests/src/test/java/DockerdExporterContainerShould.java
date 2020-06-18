@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 import java.io.IOException;
@@ -20,7 +21,11 @@ public class DockerdExporterContainerShould {
 
     @BeforeClass
     public static void before() {
+        // The host.docker.internal record does not work without the container being in an explicit network
+        Network network = Network.newNetwork();
+
         _exporterContainer = new GenericContainerEx<>(new DockerdExporterImageTagResolver())
+                .withNetwork(network)
                 .withImagePullPolicy(PullPolicyEx.never())
                 .waitingFor(WaitEx.forS6OverlayStart());
 
