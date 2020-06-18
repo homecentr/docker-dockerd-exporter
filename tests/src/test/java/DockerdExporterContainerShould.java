@@ -6,6 +6,9 @@ import io.homecentr.testcontainers.images.PullPolicyEx;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testcontainers.containers.output.Slf4jLogConsumer;
 
 import java.io.IOException;
 
@@ -13,16 +16,16 @@ import static org.junit.Assert.assertEquals;
 
 public class DockerdExporterContainerShould {
     private static GenericContainerEx _exporterContainer;
+    private static final Logger logger = LoggerFactory.getLogger(DockerdExporterContainerShould.class);
 
     @BeforeClass
     public static void before() {
         _exporterContainer = new GenericContainerEx<>(new DockerdExporterImageTagResolver())
-                .withEnv("PUID", "7088")
-                .withEnv("PGID", "7099")
                 .withImagePullPolicy(PullPolicyEx.never())
                 .waitingFor(WaitEx.forS6OverlayStart());
 
         _exporterContainer.start();
+        _exporterContainer.followOutput(new Slf4jLogConsumer(logger));
     }
 
     @AfterClass
