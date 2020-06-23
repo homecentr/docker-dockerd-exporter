@@ -1,4 +1,4 @@
-FROM homecentr/base:2.4.0-alpine
+FROM homecentr/base:2.4.3-alpine
 
 ENV DOCKERD_HOST="172.17.0.1"
 ENV DOCKERD_PORT="9323"
